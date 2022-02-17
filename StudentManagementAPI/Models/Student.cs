@@ -12,6 +12,8 @@ namespace StudentManagementAPI.Models
         public string LastName { get; set; }
         public string Email { get; set; }
 
+        public int DepartmentId { get; set; }
+
         public Student(int id, string fn, string ln, string email)
         {
             this.Id = id;
