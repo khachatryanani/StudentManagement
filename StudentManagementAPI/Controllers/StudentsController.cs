@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using StudentManagementAPI.Models;
 using StudentManagementAPI.Data;
+using StudentManagementAPI.Services;
 
 namespace StudentManagementAPI.Controllers
 {
@@ -13,16 +14,23 @@ namespace StudentManagementAPI.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
+        private readonly IDataRepository _dataRep;
+
+        public StudentsController(IDataRepository dataRepository)
+        {
+            _dataRep = dataRepository;
+        }
+
         [HttpGet]
         public IEnumerable<Student> GetStudents() 
         {
-            return DataRep.GetStudents();
+            return _dataRep.GetStudents();
         }
 
         [HttpGet("{id:int}")]
         public ActionResult<Student> GetStudent(int id)
         {
-            var student = DataRep.GetStudent(id);
+            var student = _dataRep.GetStudent(id);
             if (student is null) 
             {
                 return NotFound();
@@ -34,15 +42,24 @@ namespace StudentManagementAPI.Controllers
         [HttpPost]
         public ActionResult PostStudnet([FromBody] Student student)
         {
-            student.Id = Data.DataRep.AddStudent(student);
-          
+            student.Id = _dataRep.AddStudent(student);
+            
             return CreatedAtAction(nameof(GetStudent), new { id  = student.Id }, student.Id);
+        }
+
+        [HttpPut("{id:int}")]
+        public ActionResult UpdateStudent(int id, Student student)
+        {
+
+            student.Id = id;
+            _dataRep.UpdateStudent(student);
+            return Ok();
         }
 
         [HttpDelete("{id:int}")]
         public ActionResult DeleteStudent(int id)
         {
-            DataRep.DeleteStudent(id);
+            _dataRep.DeleteStudent(id);
 
             return NoContent();
         }
