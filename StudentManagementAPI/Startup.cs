@@ -21,16 +21,18 @@ namespace StudentManagementAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            connectionString = configuration.GetConnectionString("AzureSQLDatabase");
         }
 
         public IConfiguration Configuration { get; }
+        private readonly string connectionString;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllers();
-            services.AddScoped<IDataRepository, DataRep>();
+            services.AddScoped<IDataRepository, DataRep>(dt => new DataRep(connectionString));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentManagementAPI", Version = "v1" });
@@ -43,10 +45,10 @@ namespace StudentManagementAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentManagementAPI v1"));
+                
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentManagementAPI v1"));
             app.UseHttpsRedirection();
 
             app.UseRouting();

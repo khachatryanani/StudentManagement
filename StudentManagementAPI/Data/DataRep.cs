@@ -2,6 +2,8 @@
 using StudentManagementAPI.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +11,13 @@ namespace StudentManagementAPI.Data
 {
     public class DataRep : IDataRepository
     {
+        private readonly string connectionString;
+
+        public DataRep(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
         // Data
         private readonly List<Student> _students = new List<Student>()
             {
@@ -34,7 +43,7 @@ namespace StudentManagementAPI.Data
                 new User(6, "Samvel", "Martirosyan", "samvel.martirosyan@gmail.com", "professor"),
             };
 
-        private  readonly List<Department> _departments = new List<Department>()
+        private readonly List<Department> _departments = new List<Department>()
             {
                 new Department(1, "Physics" ),
                 new Department(2, "Chemistry" ),
@@ -86,48 +95,144 @@ namespace StudentManagementAPI.Data
         //Users
         public IEnumerable<User> GetUsers()
         {
-            return _users;
-        }
+            // return _users;
 
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[GetUsers]";
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var users = new List<User>();
+                        if (reader.HasRows)
+                        {
+                            int userId = reader.GetOrdinal("Id");
+                            int userFName = reader.GetOrdinal("FirstName");
+                            int userLName = reader.GetOrdinal("LastName");
+                            int userEmail = reader.GetOrdinal("Email");
+
+                            while (reader.Read())
+                            {
+                                users.Add(
+                                    new User
+                                    {
+                                        Id = reader.GetInt32(userId),
+                                        FirstName = reader.GetString(userFName),
+                                        LastName = reader.GetString(userLName),
+                                        Email = reader.GetString(userEmail)
+                                    });
+                            }
+                        }
+
+                        return users;
+                    }
+                }
+            }
+        }
         public User GetUser(int id)
         {
-            return _users.FirstOrDefault(st => st.Id == id);
+            //return _users.FirstOrDefault(st => st.Id == id);
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[GetUser]";
+                    command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var user = new User();
+                        if (reader.HasRows)
+                        {
+                            int userId = reader.GetOrdinal("Id");
+                            int userFName = reader.GetOrdinal("FirstName");
+                            int userLName = reader.GetOrdinal("LastName");
+                            int userEmail = reader.GetOrdinal("Email");
+
+                            user.Id = reader.GetInt32(userId);
+                            user.FirstName = reader.GetString(userFName);
+                            user.LastName = reader.GetString(userLName);
+                            user.Email = reader.GetString(userEmail);
+                        }
+
+                        return user;
+                    }
+                }
+            }
         }
-
-        public int AddUser(User user)
+        public void AddUser(User user)
         {
-            user.Id = _users.Count + 1;
-            _users.Add(user);
+            //user.Id = _users.Count + 1;
+            //_users.Add(user);
 
-            if (user.Role == "studnet") 
+            //if (user.Role == "studnet")
+            //{
+            //    var student = new Student(user.Id, user.FirstName, user.LastName, user.Email);
+            //    _students.Add(student);
+            //}
+
+            //if (user.Role == "professor")
+            //{
+            //    var prof = new Professor(user.Id, user.FirstName, user.LastName, user.Email);
+            //    _professors.Add(prof);
+            //}
+
+            //return user.Id;
+
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
-                var student = new Student(user.Id, user.FirstName, user.LastName, user.Email);
-                _students.Add(student);
-            }
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[CreateUser]";
 
-            if (user.Role == "professor")
-            {
-                var prof = new Professor(user.Id, user.FirstName, user.LastName, user.Email);
-                _professors.Add(prof);
-            }
+                    command.Parameters.Add("@firstname", SqlDbType.VarChar).Value = user.FirstName;
+                    command.Parameters.Add("@lastname", SqlDbType.VarChar).Value = user.LastName;
+                    command.Parameters.Add("@email", SqlDbType.NChar).Value = user.Email;
 
-            return user.Id;
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public void UpdateUser(User user)
         {
-            var userToUpdate = GetStudent(user.Id);
+            //var userToUpdate = GetStudent(user.Id);
 
-            userToUpdate.FirstName = user.FirstName;
-            userToUpdate.LastName = user.LastName;
-            userToUpdate.Email = user.Email;
+            //userToUpdate.FirstName = user.FirstName;
+            //userToUpdate.LastName = user.LastName;
+            //userToUpdate.Email = user.Email;
+
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[UpdateUser]";
+
+                    command.Parameters.Add("@id", SqlDbType.VarChar).Value = user.Id;
+                    command.Parameters.Add("@firstname", SqlDbType.VarChar).Value = user.FirstName;
+                    command.Parameters.Add("@lastname", SqlDbType.VarChar).Value = user.LastName;
+                    command.Parameters.Add("@email", SqlDbType.NChar).Value = user.Email;
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         public void DeleteUser(int id)
         {
             var userToRemove = GetUser(id);
 
-            if (userToRemove.Role == "student") 
+            if (userToRemove.Role == "student")
             {
                 DeleteStudent(userToRemove.Id);
             }

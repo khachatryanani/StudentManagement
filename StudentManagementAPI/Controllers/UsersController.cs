@@ -41,7 +41,7 @@ namespace StudentManagementAPI.Controllers
         [HttpPost]
         public ActionResult PostUser([FromBody] User user)
         {
-            user.Id = _dataRep.AddUser(user);
+            //user.Id = _dataRep.AddUser(user);
 
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user.Id);
         }

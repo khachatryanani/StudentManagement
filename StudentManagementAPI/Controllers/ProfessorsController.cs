@@ -83,7 +83,7 @@ namespace StudentManagementAPI.Controllers
         [HttpPost]
         public ActionResult PostProf([FromBody] Professor prof)
         {
-            prof.Id = _dataRep.AddUser(prof);
+            //prof.Id = _dataRep.AddUser(prof);
 
             return CreatedAtAction(nameof(GetProfessor), new { id = prof.Id }, prof.Id);
         }
