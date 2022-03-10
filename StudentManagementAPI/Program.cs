@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
 
 namespace StudentManagementAPI
 {
@@ -14,13 +15,25 @@ namespace StudentManagementAPI
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+
         }
 
+        //public static IHostBuilder CreateHostBuilder(string[] args) =>
+        //Host.CreateDefaultBuilder(args)
+        //.ConfigureWebHostDefaults(webBuilder =>
+        //webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+        //{
+        //    config.AddAzureKeyVault("https://ysustudents.vault.azure.net/", "https://ysustudents.vault.azure.net/keys/KeyVaultCertificate/65472a9add304413975db4c6e1c4bb54", "https://ysustudents.vault.azure.net/secrets/KeyVaultCertificate/65472a9add304413975db4c6e1c4bb54");
+        //})
+        //.UseStartup<Startup>());
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+             Host.CreateDefaultBuilder(args)
+                 .ConfigureWebHostDefaults(webBuilder =>
+                 {
+                     webBuilder.UseStartup<Startup>();
+                 });
+
+
     }
 }

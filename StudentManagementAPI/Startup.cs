@@ -22,6 +22,7 @@ namespace StudentManagementAPI
         {
             Configuration = configuration;
             connectionString = configuration.GetConnectionString("AzureSQLDatabase");
+            //connectionString = configuration.GetValue<string>("AzureSQLDatabase");
         }
 
         public IConfiguration Configuration { get; }
