@@ -24,7 +24,7 @@ namespace StudentManagementAPI.Services
 
         public User GetUser(int id);
 
-        public void AddUser(User user);
+        public int AddUser(User user);
 
         public void UpdateUser(User user);
 

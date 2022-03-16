@@ -7,11 +7,11 @@ namespace StudentManagementAPI.Models
 {
     public class Student: User
     {
-        public int DepartmentId { get; set; }
+        public Department Department { get; set; } = new Department();
 
-        public Student(int id, string fn, string ln, string email, int dep = 0): base(id, fn, ln, email, "student")
+        public Student(int id, string fn, string ln, string email, string dep=""): base(id, fn, ln, email, "student")
         {
-            this.DepartmentId = dep;
+            this.Department.Name = dep;
         }
 
         public Student()

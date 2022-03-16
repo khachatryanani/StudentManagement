@@ -41,7 +41,7 @@ namespace StudentManagementAPI.Controllers
         [HttpPost]
         public ActionResult PostUser([FromBody] User user)
         {
-            _dataRep.AddUser(user);
+            user.Id = _dataRep.AddUser(user);
 
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user.Id);
         }
@@ -54,12 +54,12 @@ namespace StudentManagementAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id:int}")]
-        public ActionResult DeleteUser(int id)
-        {
-            _dataRep.DeleteUser(id);
+        //[HttpDelete("{id:int}")]
+        //public ActionResult DeleteUser(int id)
+        //{
+        //    _dataRep.DeleteUser(id);
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
     }
 }

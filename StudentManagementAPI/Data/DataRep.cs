@@ -21,9 +21,9 @@ namespace StudentManagementAPI.Data
         // Data
         private readonly List<Student> _students = new List<Student>()
             {
-                new Student(1, "Anne", "Aramyan", "anne.aramyan@gmail.com", 1 ),
-                new Student(2, "Karen", "Abgaryan", "karen.abgaryan@gmail.com", 2 ),
-                new Student(3, "Arsen", "Marmaryan", "arsen.marmaryan@gmail.com", 3 ),
+                new Student(1, "Anne", "Aramyan", "anne.aramyan@gmail.com", "1" ),
+                new Student(2, "Karen", "Abgaryan", "karen.abgaryan@gmail.com", "2" ),
+                new Student(3, "Arsen", "Marmaryan", "arsen.marmaryan@gmail.com", "3" ),
             };
 
         private readonly List<Professor> _professors = new List<Professor>()
@@ -58,31 +58,118 @@ namespace StudentManagementAPI.Data
         //Students
         public IEnumerable<Student> GetStudents()
         {
-            return _students;
+            //return _students;
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[GetStudents]";
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var students = new List<Student>();
+                        if (reader.HasRows)
+                        {
+                            int stdId = reader.GetOrdinal("StudentId");
+                            int stdFName = reader.GetOrdinal("FirstName");
+                            int stdLName = reader.GetOrdinal("LastName");
+                            int stdEmail = reader.GetOrdinal("Email");
+                            int stdDep = reader.GetOrdinal("Department");
+
+
+                            while (reader.Read())
+                            {
+                                students.Add(
+                                    new Student
+                                    {
+                                        Id = reader.GetInt32(stdId),
+                                        FirstName = reader.GetString(stdFName),
+                                        LastName = reader.GetString(stdLName),
+                                        Email = reader.GetString(stdEmail),
+                                        Department = new Department() { Name = reader.GetString(stdDep) },
+                                    });
+                            }
+                        }
+
+                        return students;
+                    }
+                }
+            }
         }
 
         public Student GetStudent(int id)
         {
-            return _students.FirstOrDefault(st => st.Id == id);
+            //return _students.FirstOrDefault(st => st.Id == id);
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[GetStudent]";
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var student = new Student();
+                        if (reader.HasRows)
+                        {
+                            int stdId = reader.GetOrdinal("StudentId");
+                            int stdFName = reader.GetOrdinal("FirstName");
+                            int stdLName = reader.GetOrdinal("LastName");
+                            int stdEmail = reader.GetOrdinal("Email");
+                            int stdDep = reader.GetOrdinal("Department");
+
+                            student.Id = reader.GetInt32(stdId);
+                            student.FirstName = reader.GetString(stdFName);
+                            student.LastName = reader.GetString(stdLName);
+                            student.Email = reader.GetString(stdEmail);
+                            student.Department.Name = reader.GetString(stdDep);
+                        }
+
+                        return student;
+                    }
+                }
+            }
         }
 
         public int AddStudent(Student student)
         {
-            student.Id = _users.Count + 1;
-            _students.Add(student);
-            _users.Add(student);
+            //student.Id = _users.Count + 1;
+            //_students.Add(student);
+            //_users.Add(student);
+
+            //return student.Id;
+            student.Role = "student";
+            student.Id = AddUser(student);
+
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[CreateStudent]";
+
+                    command.Parameters.Add("@studentId", SqlDbType.VarChar).Value = student.Id;
+                    command.Parameters.Add("@departmentId", SqlDbType.VarChar).Value = student.Department.DepartmentId;
+                   
+                    command.ExecuteNonQuery();
+                }
+            }
 
             return student.Id;
         }
 
         public void UpdateStudent(Student student)
         {
-            var studentToUpdate = GetStudent(student.Id);
+            //var studentToUpdate = GetStudent(student.Id);
 
-            studentToUpdate.FirstName = student.FirstName;
-            studentToUpdate.LastName = student.LastName;
-            studentToUpdate.Email = student.Email;
-            studentToUpdate.DepartmentId = student.DepartmentId;
+            //studentToUpdate.FirstName = student.FirstName;
+            //studentToUpdate.LastName = student.LastName;
+            //studentToUpdate.Email = student.Email;
+            //studentToUpdate.DepartmentId = student.DepartmentId;
         }
 
         public void DeleteStudent(int id)
@@ -114,6 +201,7 @@ namespace StudentManagementAPI.Data
                             int userFName = reader.GetOrdinal("FirstName");
                             int userLName = reader.GetOrdinal("LastName");
                             int userEmail = reader.GetOrdinal("Email");
+                            int userRole = reader.GetOrdinal("Role");
 
                             while (reader.Read())
                             {
@@ -123,7 +211,8 @@ namespace StudentManagementAPI.Data
                                         Id = reader.GetInt32(userId),
                                         FirstName = reader.GetString(userFName),
                                         LastName = reader.GetString(userLName),
-                                        Email = reader.GetString(userEmail)
+                                        Email = reader.GetString(userEmail),
+                                        Role = reader.GetString(userRole)
                                     });
                             }
                         }
@@ -166,7 +255,7 @@ namespace StudentManagementAPI.Data
                 }
             }
         }
-        public void AddUser(User user)
+        public int AddUser(User user)
         {
             //user.Id = _users.Count + 1;
             //_users.Add(user);
@@ -196,8 +285,10 @@ namespace StudentManagementAPI.Data
                     command.Parameters.Add("@firstname", SqlDbType.VarChar).Value = user.FirstName;
                     command.Parameters.Add("@lastname", SqlDbType.VarChar).Value = user.LastName;
                     command.Parameters.Add("@email", SqlDbType.NChar).Value = user.Email;
+                    command.Parameters.Add("@role", SqlDbType.NChar).Value = user.Role;
 
                     command.ExecuteNonQuery();
+                    return Convert.ToInt32( command.Parameters["@id"].Value);
                 }
             }
         }
