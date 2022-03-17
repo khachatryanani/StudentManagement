@@ -30,17 +30,6 @@ namespace StudentManagementAPI.Services
 
         public void DeleteUser(int id);
 
-        //Professors
-        public IEnumerable<Professor> GetProfessors();
-
-        public Professor GetProfessor(int id);
-
-        public int AddProfessor(Professor professor);
-
-        public void UpdateProfessor(Professor professor);
-
-        public void DeleteProfessor(int id);
-
         //Department
 
         public IEnumerable<Department> GetDepartments();
@@ -50,5 +39,16 @@ namespace StudentManagementAPI.Services
         public int AddDepartment(Department department);
 
         public void UpdateDepartment(Department department);
+
+        // Course
+        public int AddCourse(Course course);
+
+        // Enrollment
+        public void AddEnrollment(int profId, int depId, int courseId);
+
+        //Records
+        public void AddRecord(Record record);
+        public IEnumerable<Record> GetStudentRecords(int studentId);
+
     }
 }

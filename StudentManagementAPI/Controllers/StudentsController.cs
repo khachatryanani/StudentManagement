@@ -39,6 +39,18 @@ namespace StudentManagementAPI.Controllers
             return Ok(student);
         }
 
+        [HttpGet("{id:int}/Records")]
+        public ActionResult<Record> GetStudentRecords(int id)
+        {
+            var records = _dataRep.GetStudentRecords(id);
+            if (records is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(records);
+        }
+
         [HttpPost]
         public ActionResult PostStudnet([FromBody] Student student)
         {
@@ -47,21 +59,21 @@ namespace StudentManagementAPI.Controllers
             return CreatedAtAction(nameof(GetStudent), new { id  = student.Id }, student.Id);
         }
 
-        [HttpPut("{id:int}")]
-        public ActionResult UpdateStudent(int id, Student student)
-        {
+        //[HttpPut("{id:int}")]
+        //public ActionResult UpdateStudent(int id, Student student)
+        //{
 
-            student.Id = id;
-            _dataRep.UpdateStudent(student);
-            return Ok();
-        }
+        //    student.Id = id;
+        //    _dataRep.UpdateStudent(student);
+        //    return Ok();
+        //}
 
-        [HttpDelete("{id:int}")]
-        public ActionResult DeleteStudent(int id)
-        {
-            _dataRep.DeleteStudent(id);
+        //[HttpDelete("{id:int}")]
+        //public ActionResult DeleteStudent(int id)
+        //{
+        //    _dataRep.DeleteStudent(id);
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
     }
 }

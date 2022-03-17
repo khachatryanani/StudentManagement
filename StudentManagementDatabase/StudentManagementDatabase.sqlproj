@@ -66,7 +66,7 @@
     <Build Include="Procedures\GetUser.sql" />
     <Build Include="Procedures\CreateUser.sql" />
     <Build Include="Procedures\UpdateUser.sql" />
-    <Build Include="Tables\Registries.sql" />
+    <Build Include="Tables\Records.sql" />
     <Build Include="Tables\Courses.sql" />
     <Build Include="Tables\Departments.sql" />
     <Build Include="Tables\Enrollments.sql" />
@@ -74,8 +74,8 @@
     <Build Include="Tables\Users.sql" />
     <Build Include="Procedures\GetStudents.sql" />
     <Build Include="Procedures\GetStudent.sql" />
-    <Build Include="Procedures\GetStudentRegistries.sql" />
-    <Build Include="Procedures\CreateRegistry.sql" />
+    <Build Include="Procedures\GetStudentRecords.sql" />
+    <Build Include="Procedures\CreateRecord.sql" />
     <Build Include="Procedures\GetProfessorCourses.sql" />
     <Build Include="Procedures\GetDepartmentCourses.sql" />
     <Build Include="Procedures\CreateCourse.sql" />

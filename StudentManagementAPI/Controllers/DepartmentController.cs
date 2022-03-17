@@ -38,7 +38,7 @@ namespace StudentManagementAPI.Controllers
             return Ok(dept);
         }
 
-        [HttpGet("{id:int}/students")]
+        [HttpGet("{id:int}/Students")]
         public ActionResult<User> GetDeptStudents(int id)
         {
             var dept = _dataRep.GetDepartment(id);
@@ -50,7 +50,7 @@ namespace StudentManagementAPI.Controllers
             return Ok(dept.Students);
         }
 
-        [HttpGet("{id:int}/courses")]
+        [HttpGet("{id:int}/Courses")]
         public ActionResult<Course> GetDeptCourses(int id)
         {
             var dept = _dataRep.GetDepartment(id);
@@ -61,19 +61,6 @@ namespace StudentManagementAPI.Controllers
 
             return Ok(dept.Courses);
         }
-
-        [HttpGet("{id:int}/professors")]
-        public ActionResult<Professor> GetDeptProfessors(int id)
-        {
-            var dept = _dataRep.GetDepartment(id);
-            if (dept is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(dept.Professors);
-        }
-
 
         [HttpPost]
         public ActionResult PostDepartment([FromBody] Department department)
@@ -91,6 +78,5 @@ namespace StudentManagementAPI.Controllers
             _dataRep.UpdateDepartment(department);
             return Ok();
         }
-
     }
 }

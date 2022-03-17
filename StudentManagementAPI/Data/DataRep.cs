@@ -58,7 +58,6 @@ namespace StudentManagementAPI.Data
         //Students
         public IEnumerable<Student> GetStudents()
         {
-            //return _students;
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
@@ -77,7 +76,6 @@ namespace StudentManagementAPI.Data
                             int stdLName = reader.GetOrdinal("LastName");
                             int stdEmail = reader.GetOrdinal("Email");
                             int stdDep = reader.GetOrdinal("Department");
-
 
                             while (reader.Read())
                             {
@@ -101,7 +99,6 @@ namespace StudentManagementAPI.Data
 
         public Student GetStudent(int id)
         {
-            //return _students.FirstOrDefault(st => st.Id == id);
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
@@ -136,11 +133,6 @@ namespace StudentManagementAPI.Data
 
         public int AddStudent(Student student)
         {
-            //student.Id = _users.Count + 1;
-            //_students.Add(student);
-            //_users.Add(student);
-
-            //return student.Id;
             student.Role = "student";
             student.Id = AddUser(student);
 
@@ -164,26 +156,17 @@ namespace StudentManagementAPI.Data
 
         public void UpdateStudent(Student student)
         {
-            //var studentToUpdate = GetStudent(student.Id);
-
-            //studentToUpdate.FirstName = student.FirstName;
-            //studentToUpdate.LastName = student.LastName;
-            //studentToUpdate.Email = student.Email;
-            //studentToUpdate.DepartmentId = student.DepartmentId;
+            //
         }
 
         public void DeleteStudent(int id)
         {
-            var studentToRemove = GetStudent(id);
-            _students.Remove(studentToRemove);
-            _users.Remove(studentToRemove);
+            //
         }
 
         //Users
         public IEnumerable<User> GetUsers()
         {
-            // return _users;
-
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
@@ -224,7 +207,6 @@ namespace StudentManagementAPI.Data
         }
         public User GetUser(int id)
         {
-            //return _users.FirstOrDefault(st => st.Id == id);
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
@@ -255,25 +237,9 @@ namespace StudentManagementAPI.Data
                 }
             }
         }
+
         public int AddUser(User user)
         {
-            //user.Id = _users.Count + 1;
-            //_users.Add(user);
-
-            //if (user.Role == "studnet")
-            //{
-            //    var student = new Student(user.Id, user.FirstName, user.LastName, user.Email);
-            //    _students.Add(student);
-            //}
-
-            //if (user.Role == "professor")
-            //{
-            //    var prof = new Professor(user.Id, user.FirstName, user.LastName, user.Email);
-            //    _professors.Add(prof);
-            //}
-
-            //return user.Id;
-
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
@@ -295,12 +261,6 @@ namespace StudentManagementAPI.Data
 
         public void UpdateUser(User user)
         {
-            //var userToUpdate = GetStudent(user.Id);
-
-            //userToUpdate.FirstName = user.FirstName;
-            //userToUpdate.LastName = user.LastName;
-            //userToUpdate.Email = user.Email;
-
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
                 connection.Open();
@@ -321,53 +281,7 @@ namespace StudentManagementAPI.Data
 
         public void DeleteUser(int id)
         {
-            var userToRemove = GetUser(id);
-
-            if (userToRemove.Role == "student")
-            {
-                DeleteStudent(userToRemove.Id);
-            }
-
-            if (userToRemove.Role == "professor")
-            {
-                DeleteProfessor(userToRemove.Id);
-            }
-        }
-
-        //Professors
-        public IEnumerable<Professor> GetProfessors()
-        {
-            return _professors;
-        }
-
-        public Professor GetProfessor(int id)
-        {
-            return _professors.FirstOrDefault(pr => pr.Id == id);
-        }
-
-        public int AddProfessor(Professor professor)
-        {
-            professor.Id = _users.Count + 1;
-            _professors.Add(professor);
-            _users.Add(professor);
-
-            return professor.Id;
-        }
-
-        public void UpdateProfessor(Professor professor)
-        {
-            var profToUpdate = GetStudent(professor.Id);
-
-            profToUpdate.FirstName = professor.FirstName;
-            profToUpdate.LastName = professor.LastName;
-            profToUpdate.Email = professor.Email;
-        }
-
-        public void DeleteProfessor(int id)
-        {
-            var profToRemove = GetProfessor(id);
-            _professors.Remove(profToRemove);
-            _users.Remove(profToRemove);
+            //
         }
 
         //Department
@@ -395,6 +309,107 @@ namespace StudentManagementAPI.Data
             var depToUpdate = GetDepartment(department.DepartmentId);
 
             depToUpdate.Name = department.Name;
+        }
+
+        // Courses
+        public int AddCourse(Course course)
+        { 
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[CreateCourse]";
+
+                    command.Parameters.Add("@title", SqlDbType.VarChar).Value = course.Title;
+                   
+                    command.ExecuteNonQuery();
+                    return Convert.ToInt32(command.Parameters["@id"].Value);
+                }
+            }
+        }
+
+
+        // Enrollments
+        public void AddEnrollment(int profId, int depId, int courseId)
+        {
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[CreateEnrollment]";
+
+                    command.Parameters.Add("@professorId", SqlDbType.VarChar).Value = profId;
+                    command.Parameters.Add("@departmentId", SqlDbType.VarChar).Value = depId;
+                    command.Parameters.Add("@courseId", SqlDbType.VarChar).Value = courseId;
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // Records
+        public void AddRecord(Record record)
+        {
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[CreateRecord]";
+
+                    command.Parameters.Add("@studentId", SqlDbType.VarChar).Value = record.StudentId;
+                    command.Parameters.Add("@professorId", SqlDbType.VarChar).Value = record.ProfessorId;
+                    command.Parameters.Add("@courseId", SqlDbType.VarChar).Value = record.CourseId;
+                    command.Parameters.Add("@c", SqlDbType.VarChar).Value = record.Grade;
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public IEnumerable<Record> GetStudentRecords(int studentId) 
+        {
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[GetStudentRecords]";
+                    command.Parameters.Add("@studentId", SqlDbType.Int).Value = studentId;
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var records = new List<Record>();
+                        if (reader.HasRows)
+                        {
+                            int stdId = reader.GetOrdinal("StudentId");
+                            int profId = reader.GetOrdinal("ProfessorId");
+                            int cId = reader.GetOrdinal("CourseId");
+                            int grade = reader.GetOrdinal("Grade");
+
+                            while (reader.Read())
+                            {
+                                records.Add(
+                                    new Record
+                                    {
+                                        StudentId = reader.GetInt32(stdId),
+                                        ProfessorId = reader.GetInt32(profId),
+                                        CourseId = reader.GetInt32(cId),
+                                        Grade = reader.GetInt32(grade)
+                                    });
+                            }
+                        }
+
+                        return records;
+                    }
+                }
+            }
         }
     }
 }
