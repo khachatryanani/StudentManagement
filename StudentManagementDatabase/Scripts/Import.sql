@@ -10,3 +10,5 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 --:r ..\Data\Users.sql
+--:r ..\Data\Departments.sql
+--:r ..\Data\Students.sql

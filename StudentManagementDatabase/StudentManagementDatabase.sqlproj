@@ -85,6 +85,8 @@
   <ItemGroup>
     <None Include="StudentManagementDatabase.publish.xml" />
     <None Include="Data\Users.sql" />
+    <None Include="Data\Departments.sql" />
+    <None Include="Data\Students.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Import.sql" />
