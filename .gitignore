@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+#my added list of files
+StudentManagementAPI/.config/
+.gitignore
+StudentManagementAPI/Properties/ServiceDependencies
+/StudentManagementAPI/appsettings.json
