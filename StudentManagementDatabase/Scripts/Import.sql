@@ -9,6 +9,6 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
---:r ..\Data\Users.sql
---:r ..\Data\Departments.sql
---:r ..\Data\Students.sql
+:r ..\Data\Users.sql
+:r ..\Data\Departments.sql
+:r ..\Data\Students.sql

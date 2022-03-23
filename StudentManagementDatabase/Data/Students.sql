@@ -1,6 +1,6 @@
-﻿INSERT INTO Studnets (StudentId, DepartmentId)
+﻿INSERT INTO Students (StudentId, DepartmentId)
 VALUES
-(1000,10),
+(1000,13),
 (1001,14),
 (1002,13),
-(1004,10)
+(1004,15)
