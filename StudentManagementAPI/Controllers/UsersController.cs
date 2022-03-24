@@ -54,12 +54,12 @@ namespace StudentManagementAPI.Controllers
             return Ok();
         }
 
-        //[HttpDelete("{id:int}")]
-        //public ActionResult DeleteUser(int id)
-        //{
-        //    _dataRep.DeleteUser(id);
+        [HttpDelete("{id:int}")]
+        public ActionResult DeleteUser(int id)
+        {
+            _dataRep.DeleteUser(id);
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
     }
 }

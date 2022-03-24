@@ -225,11 +225,16 @@ namespace StudentManagementAPI.Data
                             int userFName = reader.GetOrdinal("FirstName");
                             int userLName = reader.GetOrdinal("LastName");
                             int userEmail = reader.GetOrdinal("Email");
+                            int userRole = reader.GetOrdinal("Role");
 
-                            user.Id = reader.GetInt32(userId);
-                            user.FirstName = reader.GetString(userFName);
-                            user.LastName = reader.GetString(userLName);
-                            user.Email = reader.GetString(userEmail);
+                            while (reader.Read())
+                            {
+                                user.Id = reader.GetInt32(userId);
+                                user.FirstName = reader.GetString(userFName);
+                                user.LastName = reader.GetString(userLName);
+                                user.Email = reader.GetString(userEmail);
+                                user.Role = reader.GetString(userRole);
+                            }
                         }
 
                         return user;
@@ -252,6 +257,10 @@ namespace StudentManagementAPI.Data
                     command.Parameters.Add("@lastname", SqlDbType.VarChar).Value = user.LastName;
                     command.Parameters.Add("@email", SqlDbType.NChar).Value = user.Email;
                     command.Parameters.Add("@role", SqlDbType.NChar).Value = user.Role;
+
+                    SqlParameter id = new SqlParameter("@id", SqlDbType.Int);
+                    id.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(id);
 
                     command.ExecuteNonQuery();
                     return Convert.ToInt32( command.Parameters["@id"].Value);
@@ -281,7 +290,19 @@ namespace StudentManagementAPI.Data
 
         public void DeleteUser(int id)
         {
-            //
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[DeleteUser]";
+
+                    command.Parameters.Add("@id", SqlDbType.VarChar).Value =id;
+
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         //Department
