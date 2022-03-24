@@ -31,8 +31,8 @@ else
                     <td>@user.email</td>
                     <td>@user.role</td>
                     <td>
-                        <a href="/edituser/@user.id.ToString()" >Edit</a>
-                        <button>Delete</button>
+                        <a href="/edituser/@user.id.ToString()" class="btn btn-warning">Edit</a>
+                        <a href="/deleteuser/@user.id.ToString()" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }
