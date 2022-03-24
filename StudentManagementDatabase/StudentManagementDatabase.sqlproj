@@ -81,6 +81,7 @@
     <Build Include="Procedures\CreateCourse.sql" />
     <Build Include="Procedures\CreateEnrollment.sql" />
     <Build Include="Procedures\CreateStudent.sql" />
+    <Build Include="Procedures\DeleteUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="StudentManagementDatabase.publish.xml" />
