@@ -368,3 +368,5 @@ StudentManagementAPI/.config/
 .gitignore
 StudentManagementAPI/Properties/ServiceDependencies
 /StudentManagementAPI/appsettings.json
+StudentManagement.sln
+.gitignore
