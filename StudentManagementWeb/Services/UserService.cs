@@ -35,7 +35,7 @@ namespace StudentManagementWeb.Services
             HttpRequestMessage request = new HttpRequestMessage();
 
             request.Method = HttpMethod.Get;
-            request.RequestUri = new Uri(@"https://studentsportalysu.azurewebsites.net/api/Users" + id);
+            request.RequestUri = new Uri(@"https://studentsportalysu.azurewebsites.net/api/Users/" + id);
 
             HttpResponseMessage response = await _httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
