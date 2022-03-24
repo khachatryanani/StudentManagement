@@ -10,40 +10,71 @@ namespace StudentManagementWeb.Services
 {
     public class UserService
     {
+        private readonly HttpClient _httpClient;
+
+        public UserService(HttpClient httpClient)
+        {
+            this._httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("https://studentsportalysu.azurewebsites.net/api/");
+        }
+
         public async Task<List<User>> GetUsers()
         {
-            HttpClient _httpClient = new HttpClient();
-            HttpRequestMessage request = new HttpRequestMessage();
+           
+            HttpResponseMessage response =  await _httpClient.GetAsync(new Uri("Users",UriKind.Relative));
 
-            request.Method = HttpMethod.Get;
-            request.RequestUri = new Uri(@"https://studentsportalysu.azurewebsites.net/api/Users");
+            //HttpRequestMessage request = new HttpRequestMessage();
 
-            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            //request.Method = HttpMethod.Get;
+            //request.RequestUri = new Uri("Users");
+
+            //HttpResponseMessage response = await _httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                //var NameObject = JsonConvert.DeserializeObject<User>(json);
-                return System.Text.Json.JsonSerializer.Deserialize<List<User>>(json);
+                return System.Text.Json.JsonSerializer.Deserialize<List<User>>(json ,new JsonSerializerOptions() { PropertyNameCaseInsensitive = true});
+            }
+
+            throw new HttpRequestException(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<User> GetUser(int id)
+        {
+            //HttpRequestMessage request = new HttpRequestMessage();
+
+            //request.Method = HttpMethod.Get;
+            //request.RequestUri = new Uri(@"https://studentsportalysu.azurewebsites.net/api/Users/" + id);
+
+            //HttpResponseMessage response = await _httpClient.SendAsync(request);
+
+            HttpResponseMessage response = await _httpClient.GetAsync(new Uri($"Users/{id}", UriKind.Relative));
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                return System.Text.Json.JsonSerializer.Deserialize<User>(json, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
             }
             throw new HttpRequestException(await response.Content.ReadAsStringAsync());
 
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task UpdateUser(User user)
         {
-            HttpClient _httpClient = new HttpClient();
-            HttpRequestMessage request = new HttpRequestMessage();
+            //HttpRequestMessage request = new HttpRequestMessage();
 
-            request.Method = HttpMethod.Get;
-            request.RequestUri = new Uri(@"https://studentsportalysu.azurewebsites.net/api/Users/" + id);
+            //request.Method = HttpMethod.Get;
+            //request.RequestUri = new Uri(@"https://studentsportalysu.azurewebsites.net/api/Users/" + id);
 
-            HttpResponseMessage response = await _httpClient.SendAsync(request);
-            if (response.IsSuccessStatusCode)
+            //HttpResponseMessage response = await _httpClient.SendAsync(request);
+            var json = System.Text.Json.JsonSerializer.Serialize(user);
+            
+            var stringJson = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PutAsync(new Uri($"Users/{user.Id}", UriKind.Relative), stringJson);
+            if (response.IsSuccessStatusCode) 
             {
-                var json = await response.Content.ReadAsStringAsync();
-                //var NameObject = JsonConvert.DeserializeObject<User>(json);
-                return System.Text.Json.JsonSerializer.Deserialize<User>(json);
+                return;
             }
+
             throw new HttpRequestException(await response.Content.ReadAsStringAsync());
 
         }

@@ -27,12 +27,19 @@ namespace StudentManagementWeb
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddHttpClient<UserService>(opt => {
+
+                opt.BaseAddress = new Uri(Configuration["ApiBaseAddress"].ToString());
+            });
+            services.AddRazorPages().AddJsonOptions(j =>
+            {
+                j.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            }); 
+
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<UserService>();
-
-
+           
+            services.AddScoped<UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

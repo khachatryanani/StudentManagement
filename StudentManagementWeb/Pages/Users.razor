@@ -26,13 +26,13 @@ else
             @foreach (var user in users)
             {
                 <tr>
-                    <td>@user.firstName</td>
-                    <td>@user.lastName</td>
-                    <td>@user.email</td>
-                    <td>@user.role</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
                     <td>
-                        <a href="/edituser/@user.id.ToString()" class="btn btn-warning">Edit</a>
-                        <a href="/deleteuser/@user.id.ToString()" class="btn btn-danger">Delete</a>
+                        <a href="/edituser/@user.Id" class="btn btn-warning">Edit</a>
+                        <a href="/deleteuser/@user.Id" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             }
