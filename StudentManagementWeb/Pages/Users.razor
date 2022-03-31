@@ -13,7 +13,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table" style="table-layout: fixed;">
         <thead>
             <tr>
                 <th>First Name</th>
@@ -26,12 +26,13 @@ else
         <tbody>
             @foreach (var user in users)
             {
-            <tr>
+            <tr style="word-wrap: break-word;">
                 <td>@user.FirstName</td>
                 <td>@user.LastName</td>
                 <td>@user.Email</td>
-                <td>@user.Role</td>
-                <td>@user.ImageUrl</td>
+                <td >@user.Role</td>
+                <td >
+                <img style="max-width:50px; max-height:50px;" src="@user.ImageUrl"/></td>
                 <td>
                     <a href="/edituser/@user.Id" class="btn btn-warning">Edit</a>
                     <a href="/deleteuser/@user.Id" class="btn btn-danger">Delete</a>

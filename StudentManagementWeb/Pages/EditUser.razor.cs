@@ -34,19 +34,35 @@ namespace StudentManagementWeb.Pages
 
         public async Task OnUpdate()
         {
-            CloudStorageAccount storage = CloudStorageAccount.Parse(Configurations.BlobStorageConnectionString);
-            CloudBlobClient client = storage.CreateCloudBlobClient();
+            
 
-            CloudBlobContainer container = client.GetContainerReference("userimages");
+            try
+            {
+                if (File != null) 
+                {
+                    CloudStorageAccount storage = CloudStorageAccount.Parse(Configurations.BlobStorageConnectionString);
+                    CloudBlobClient client = storage.CreateCloudBlobClient();
 
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference($"image{user.Id}");
+                    CloudBlobContainer container = client.GetContainerReference("userimages");
 
-            await blockBlob.UploadFromStreamAsync(File.OpenReadStream());
+                    CloudBlockBlob blockBlob = container.GetBlockBlobReference($"image{user.Id}");
+                    
+                    await blockBlob.UploadFromStreamAsync(File.OpenReadStream());
+                    await blockBlob.SetStandardBlobTierAsync(StandardBlobTier.Cool);
 
-            user.ImageUrl = blockBlob.Uri.ToString();
-
-            await UserService.UpdateUser(user);
-            NavManager.NavigateTo("/users");
+                    if (!string.IsNullOrEmpty(blockBlob.Uri.ToString()))
+                    {
+                        user.ImageUrl = blockBlob.Uri.ToString();
+                    }
+                }
+                
+                await UserService.UpdateUser(user);
+                NavManager.NavigateTo("/users");
+            }
+            catch (Exception ex) 
+            {
+                //
+            }
         }
 
         public void GetFile(InputFileChangeEventArgs e)
