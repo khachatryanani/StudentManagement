@@ -1,10 +1,7 @@
 ﻿@page "/edituser/{id:int}"
 
-@using StudentManagementWeb.Data
 @using StudentManagementWeb.Services
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@inject UserService UserService
-@inject NavigationManager NavManager
+
 
 
 <h1>Edit User</h1>
@@ -16,41 +13,25 @@
 else
 {
 
-    <EditForm Model="@user" OnValidSubmit=@OnUpdate>
-        <div class="form-group">
-            <input class="form-control" @bind=@user.FirstName>
-        </div>
-        <div class="form-group">
-            <input class="form-control" @bind-value=@user.LastName>
-        </div>
-        <div class="form-group">
-            <input class="form-control" @bind-value=@user.Email>
-        </div>
-        <div class="form-group">
-            <input class="form-control" @bind-value=@user.Role disabled>
-        </div>
-        <button type="submit" class="btn btn-success">Save</button>
-    </EditForm>
+<EditForm Model="@user" OnValidSubmit=@OnUpdate>
+    <div class="form-group">
+        <input class="form-control" @bind=@user.FirstName>
+    </div>
+    <div class="form-group">
+        <input class="form-control" @bind-value=@user.LastName>
+    </div>
+    <div class="form-group">
+        <input class="form-control" @bind-value=@user.Email>
+    </div>
+    <div class="form-group">
+        <input class="form-control" @bind-value=@user.Role disabled>
+    </div>
+    <div class="form-group">
+        <InputFile class="form-control" OnChange="GetFile" />
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+</EditForm>
 
 
 
-}
-
-
-@code {
-    [Parameter]
-    public int Id { get; set; }
-
-    private User user;
-
-    protected override async Task OnInitializedAsync()
-    {
-        user = await UserService.GetUser(Id);
-    }
-
-    public async Task OnUpdate()
-    {
-        await UserService.UpdateUser(user);
-        NavManager.NavigateTo("/users");
-    }
 }

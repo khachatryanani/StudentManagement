@@ -11,7 +11,7 @@ namespace StudentManagementAPI.Models
         {
 
         }
-        public Professor(int id, string fn, string ln, string email): base(id, fn, ln, email, "professor")
+        public Professor(int id, string fn, string ln, string email): base(id, fn, ln, email, "professor", string.Empty )
         {
             Departments = new List<Department>();
             Courses = new List<Course>();

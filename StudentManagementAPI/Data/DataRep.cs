@@ -33,15 +33,15 @@ namespace StudentManagementAPI.Data
                 new Professor(6, "Samvel", "Martirosyan", "samvel.martirosyan@gmail.com"),
             };
 
-        private readonly List<User> _users = new List<User>()
-            {
-                new User(1, "Anne", "Aramyan", "anne.aramyan@gmail.com", "student" ),
-                new User(2, "Karen", "Abgaryan", "karen.abgaryan@gmail.com", "student" ),
-                new User(3, "Arsen", "Marmaryan", "arsen.marmaryan@gmail.com", "student" ),
-                new User(4, "Zaven", "Hovakimyan", "zaven.hovakimyan@gmail.com", "professor" ),
-                new User(5, "Armen", "Vardanyan", "armen.vardanyan@gmail.com", "professor" ),
-                new User(6, "Samvel", "Martirosyan", "samvel.martirosyan@gmail.com", "professor"),
-            };
+        //private readonly List<User> _users = new List<User>()
+        //    {
+        //        new User(1, "Anne", "Aramyan", "anne.aramyan@gmail.com", "student" ),
+        //        new User(2, "Karen", "Abgaryan", "karen.abgaryan@gmail.com", "student" ),
+        //        new User(3, "Arsen", "Marmaryan", "arsen.marmaryan@gmail.com", "student" ),
+        //        new User(4, "Zaven", "Hovakimyan", "zaven.hovakimyan@gmail.com", "professor" ),
+        //        new User(5, "Armen", "Vardanyan", "armen.vardanyan@gmail.com", "professor" ),
+        //        new User(6, "Samvel", "Martirosyan", "samvel.martirosyan@gmail.com", "professor"),
+        //    };
 
         private readonly List<Department> _departments = new List<Department>()
             {
@@ -185,6 +185,7 @@ namespace StudentManagementAPI.Data
                             int userLName = reader.GetOrdinal("LastName");
                             int userEmail = reader.GetOrdinal("Email");
                             int userRole = reader.GetOrdinal("Role");
+                            int userImageUrl = reader.GetOrdinal("ImageURL");
 
                             while (reader.Read())
                             {
@@ -195,7 +196,8 @@ namespace StudentManagementAPI.Data
                                         FirstName = reader.GetString(userFName),
                                         LastName = reader.GetString(userLName),
                                         Email = reader.GetString(userEmail),
-                                        Role = reader.GetString(userRole)
+                                        Role = reader.GetString(userRole),
+                                        ImageUrl = reader.IsDBNull(userImageUrl) ? default : reader.GetString(userImageUrl)
                                     });
                             }
                         }
@@ -226,6 +228,7 @@ namespace StudentManagementAPI.Data
                             int userLName = reader.GetOrdinal("LastName");
                             int userEmail = reader.GetOrdinal("Email");
                             int userRole = reader.GetOrdinal("Role");
+                            int userImageUrl = reader.GetOrdinal("ImageURL");
 
                             while (reader.Read())
                             {
@@ -234,6 +237,7 @@ namespace StudentManagementAPI.Data
                                 user.LastName = reader.GetString(userLName);
                                 user.Email = reader.GetString(userEmail);
                                 user.Role = reader.GetString(userRole);
+                                user.ImageUrl = reader.IsDBNull(userImageUrl) ? default : reader.GetString(userImageUrl);
                             }
                         }
 
@@ -253,10 +257,12 @@ namespace StudentManagementAPI.Data
                     command.CommandType = CommandType.StoredProcedure;
                     command.CommandText = "[dbo].[CreateUser]";
 
-                    command.Parameters.Add("@firstname", SqlDbType.VarChar).Value = user.FirstName;
-                    command.Parameters.Add("@lastname", SqlDbType.VarChar).Value = user.LastName;
-                    command.Parameters.Add("@email", SqlDbType.NChar).Value = user.Email;
-                    command.Parameters.Add("@role", SqlDbType.NChar).Value = user.Role;
+                    command.Parameters.Add("@firstname", SqlDbType.NVarChar).Value = user.FirstName;
+                    command.Parameters.Add("@lastname", SqlDbType.NVarChar).Value = user.LastName;
+                    command.Parameters.Add("@email", SqlDbType.NVarChar).Value = user.Email;
+                    command.Parameters.Add("@role", SqlDbType.NVarChar).Value = user.Role;
+                    command.Parameters.Add("@imageUrl", SqlDbType.VarChar).Value = user.ImageUrl;
+
 
                     SqlParameter id = new SqlParameter("@id", SqlDbType.Int);
                     id.Direction = ParameterDirection.Output;
@@ -278,10 +284,11 @@ namespace StudentManagementAPI.Data
                     command.CommandType = CommandType.StoredProcedure;
                     command.CommandText = "[dbo].[UpdateUser]";
 
-                    command.Parameters.Add("@id", SqlDbType.VarChar).Value = user.Id;
-                    command.Parameters.Add("@firstname", SqlDbType.VarChar).Value = user.FirstName;
-                    command.Parameters.Add("@lastname", SqlDbType.VarChar).Value = user.LastName;
-                    command.Parameters.Add("@email", SqlDbType.NChar).Value = user.Email;
+                    command.Parameters.Add("@id", SqlDbType.NVarChar).Value = user.Id;
+                    command.Parameters.Add("@firstname", SqlDbType.NVarChar).Value = user.FirstName;
+                    command.Parameters.Add("@lastname", SqlDbType.NVarChar).Value = user.LastName;
+                    command.Parameters.Add("@email", SqlDbType.NVarChar).Value = user.Email;
+                    command.Parameters.Add("@imageUrl", SqlDbType.VarChar).Value = user.ImageUrl;
 
                     command.ExecuteNonQuery();
                 }

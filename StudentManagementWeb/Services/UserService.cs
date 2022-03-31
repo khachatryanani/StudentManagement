@@ -16,6 +16,8 @@ namespace StudentManagementWeb.Services
         {
             this._httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://studentsportalysu.azurewebsites.net/api/");
+            //_httpClient.BaseAddress = new Uri("https://localhost:5001/");
+
         }
 
         public async Task<List<User>> GetUsers()
@@ -48,12 +50,6 @@ namespace StudentManagementWeb.Services
 
         public async Task UpdateUser(User user)
         {
-            //HttpRequestMessage request = new HttpRequestMessage();
-
-            //request.Method = HttpMethod.Get;
-            //request.RequestUri = new Uri(@"https://studentsportalysu.azurewebsites.net/api/Users/" + id);
-
-            //HttpResponseMessage response = await _httpClient.SendAsync(request);
             var json = System.Text.Json.JsonSerializer.Serialize(user);
             
             var stringJson = new StringContent(json, System.Text.Encoding.UTF8, "application/json");

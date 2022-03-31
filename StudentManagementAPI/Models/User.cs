@@ -12,19 +12,22 @@ namespace StudentManagementAPI.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+        public string ImageUrl { get; set; }
+
 
         public User()
         {
 
         }
 
-        public User(int id, string fName, string lName, string email, string role) 
+        public User(int id, string fName, string lName, string email, string role, string imageUrl) 
         {
             this.Id = id;
             this.FirstName = fName;
             this.LastName = lName;
             this.Email = email;
             this.Role = role;
+            this.ImageUrl = imageUrl;
         }
     }
 }

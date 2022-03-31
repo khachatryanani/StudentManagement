@@ -9,7 +9,7 @@ namespace StudentManagementAPI.Models
     {
         public Department Department { get; set; } = new Department();
 
-        public Student(int id, string fn, string ln, string email, string dep=""): base(id, fn, ln, email, "student")
+        public Student(int id, string fn, string ln, string email, string dep=""): base(id, fn, ln, email, "student", string.Empty)
         {
             this.Department.Name = dep;
         }

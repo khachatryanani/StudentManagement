@@ -20,21 +20,23 @@ else
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Image URL</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in users)
             {
-                <tr>
-                    <td>@user.FirstName</td>
-                    <td>@user.LastName</td>
-                    <td>@user.Email</td>
-                    <td>@user.Role</td>
-                    <td>
-                        <a href="/edituser/@user.Id" class="btn btn-warning">Edit</a>
-                        <a href="/deleteuser/@user.Id" class="btn btn-danger">Delete</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@user.ImageUrl</td>
+                <td>
+                    <a href="/edituser/@user.Id" class="btn btn-warning">Edit</a>
+                    <a href="/deleteuser/@user.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

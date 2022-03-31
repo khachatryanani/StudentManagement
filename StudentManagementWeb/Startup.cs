@@ -40,6 +40,8 @@ namespace StudentManagementWeb
             services.AddSingleton<WeatherForecastService>();
            
             services.AddScoped<UserService>();
+
+            Configurations.BlobStorageConnectionString = Configuration["BlobStorge"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
