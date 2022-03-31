@@ -23,12 +23,7 @@ namespace StudentManagementWeb.Services
            
             HttpResponseMessage response =  await _httpClient.GetAsync(new Uri("Users",UriKind.Relative));
 
-            //HttpRequestMessage request = new HttpRequestMessage();
-
-            //request.Method = HttpMethod.Get;
-            //request.RequestUri = new Uri("Users");
-
-            //HttpResponseMessage response = await _httpClient.SendAsync(request);
+            
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
@@ -40,13 +35,6 @@ namespace StudentManagementWeb.Services
 
         public async Task<User> GetUser(int id)
         {
-            //HttpRequestMessage request = new HttpRequestMessage();
-
-            //request.Method = HttpMethod.Get;
-            //request.RequestUri = new Uri(@"https://studentsportalysu.azurewebsites.net/api/Users/" + id);
-
-            //HttpResponseMessage response = await _httpClient.SendAsync(request);
-
             HttpResponseMessage response = await _httpClient.GetAsync(new Uri($"Users/{id}", UriKind.Relative));
 
             if (response.IsSuccessStatusCode)

@@ -5,6 +5,7 @@
 	[LastName] NVARCHAR(30) NOT NULL,
 	[Email] NVARCHAR(50) NOT NULL,
 	[Role] NVARCHAR(10) NOT NULL,
+	[ImageURL] VARCHAR(2048) NULL, 
 	CONSTRAINT PK_UserID PRIMARY KEY (Id),
 	CONSTRAINT UQ_Email UNIQUE (Email),
 	CONSTRAINT CH_Role CHECK ([Role] in ('Student', 'Professor', 'Other'))
