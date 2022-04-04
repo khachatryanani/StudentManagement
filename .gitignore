@@ -365,8 +365,6 @@ FodyWeavers.xsd
 
 #my added list of files
 StudentManagementAPI/.config/
-.gitignore
 StudentManagementAPI/Properties/ServiceDependencies
 /StudentManagementAPI/appsettings.json
 StudentManagement.sln
-.gitignore
