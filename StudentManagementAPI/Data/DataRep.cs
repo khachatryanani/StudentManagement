@@ -50,6 +50,14 @@ namespace StudentManagementAPI.Data
                 new Department(3, "Information Technology" )
             };
 
+        private readonly List<Course> _courses = new List<Course>()
+            {
+            //new Course()
+                //new Department(1, "Physics" ),
+                //new Department(2, "Chemistry" ),
+                //new Department(3, "Information Technology" )
+            };
+
         public DataRep()
         {
 
@@ -157,11 +165,46 @@ namespace StudentManagementAPI.Data
         public void UpdateStudent(Student student)
         {
             //
+            /*student.Role = "student";
+            student.Id = UpdateUser(student);
+
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[UpdateStudent]";
+
+                    command.Parameters.Add("@studentId", SqlDbType.VarChar).Value = student.Id;
+                    command.Parameters.Add("@departmentId", SqlDbType.VarChar).Value = student.Department.DepartmentId;
+
+                    command.ExecuteNonQuery();
+                }
+            }*/
+
         }
 
         public void DeleteStudent(int id)
         {
             //
+            /*student.Role = "student";
+            student.Id = DeleteUser(student);
+
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[DeleteStudent]";
+
+                    command.Parameters.Add("@studentId", SqlDbType.VarChar).Value = student.Id;
+                    command.Parameters.Add("@departmentId", SqlDbType.VarChar).Value = student.Department.DepartmentId;
+
+                    command.ExecuteNonQuery();
+                }
+            }*/
         }
 
         //Users
@@ -357,6 +400,82 @@ namespace StudentManagementAPI.Data
                 }
             }
         }
+        public IEnumerable<Course> GetCouses()
+        {
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[GetCourses]";
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var courses = new List<Course>();
+                        if (reader.HasRows)
+                        {
+                            int courseId = reader.GetOrdinal("CourseId");
+                            int title = reader.GetOrdinal("Title");
+                            int stdProf = reader.GetOrdinal("Professor");
+                            int stdDep = reader.GetOrdinal("Department");
+
+                            while (reader.Read())
+                            {
+                                courses.Add(
+                                    new Course
+                                    {
+                                        CourseId = reader.GetInt32(courseId),
+                                        Title = reader.GetInt32(title),
+                                        Department = new Department() { Name = reader.GetString(stdDep) },
+                                        Professor = new Professor() { Id = reader.GetInt32(stdProf) }
+                                    });
+                            }
+                        }
+
+                        return courses;
+                    }
+                }
+            }
+        }
+
+        Course IDataRepository.GetCouse(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(this.connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.CommandText = "[dbo].[GetCourse]";
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var course = new Course();
+                        if (reader.HasRows)
+                        {
+                            int courseId = reader.GetOrdinal("CourseId");
+                            int title = reader.GetOrdinal("Title");
+                            int stdProf = reader.GetOrdinal("Professor");
+                            int stdDep = reader.GetOrdinal("Department");
+
+
+                            course.CourseId = reader.GetInt32(courseId);
+                            course.Title = reader.GetInt32(title);
+                            course.Professor.Id = reader.GetInt32(stdProf);
+                            course.Department.Name = reader.GetString(stdDep);
+                        }
+
+                        return course;
+                    }
+                }
+            }
+        }
+
+
+        //public Course GetCourse(int id)
+        //{
+       // }
 
 
         // Enrollments
@@ -439,5 +558,5 @@ namespace StudentManagementAPI.Data
                 }
             }
         }
-    }
+    }    
 }

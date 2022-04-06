@@ -60,7 +60,24 @@ namespace StudentManagementWeb.Services
             }
 
             throw new HttpRequestException(await response.Content.ReadAsStringAsync());
-
         }
+
+        public async Task DeleteUser(User user)
+        {
+            var json = System.Text.Json.JsonSerializer.Serialize(user);
+
+            var stringJson = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+
+            HttpResponseMessage response = await _httpClient.DeleteAsync(new string("Users/{user.Id}"));
+            if (response.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+            throw new HttpRequestException(await response.Content.ReadAsStringAsync());
+        }
+
     }
 }
+

@@ -1,0 +1,49 @@
+﻿@page "/depertment"
+
+@using StudentManagementWeb.Services
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using StudentManagementWeb.Data
+@inject DepartmentService DepartmentService
+
+<h1>Department Data</h1>
+
+@if (departments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table" style="table-layout: fixed;">
+        <thead>
+            <tr>
+                <th>DepartmentId</th>
+                <th>Title</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var department in departments)
+            {
+                <tr style="word-wrap: break-word;">
+                    <td>@department.DepartmentId</td>
+                    <td>@department.Name</td>
+                    
+                    <td>
+                        <a href="/edituser/@department.DepartmentId" class="btn btn-warning">Edit</a>
+                        <a href="/deleteuser/@department.DepartmentId" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    //private Department[] users;
+    private DepartmentMeri[] departments;
+    protected override async Task OnInitializedAsync()
+    {
+
+        departments = (await DepartmentService.GetDepartments()).ToArray();
+    }
+}
