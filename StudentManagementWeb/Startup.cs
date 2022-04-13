@@ -31,15 +31,21 @@ namespace StudentManagementWeb
 
                 opt.BaseAddress = new Uri(Configuration["ApiBaseAddress"].ToString());
             });
+            services.AddHttpClient<DepartmentService>(opt =>
+            {
+                opt.BaseAddress = new Uri(Configuration["ApiBaseAddress"].ToString());
+            });
+
             services.AddRazorPages().AddJsonOptions(j =>
             {
                 j.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             }); 
 
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
-           
+           // services.AddSingleton<DepartmentService>();
             services.AddScoped<UserService>();
+            services.AddScoped<DepartmentService>();
+
 
             Configurations.BlobStorageConnectionString = Configuration["BlobStorge"];
         }

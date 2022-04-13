@@ -42,6 +42,10 @@ namespace StudentManagementAPI.Services
 
         // Course
         public int AddCourse(Course course);
+        public IEnumerable<Course> GetCouses();
+        public Course GetCouse(int id);
+
+
 
         // Enrollment
         public void AddEnrollment(int profId, int depId, int courseId);

@@ -26,5 +26,30 @@ namespace StudentManagementAPI.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public ActionResult<Course> GetCourse()
+        {
+            var course = _dataRep.GetCouses();
+            if (course is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(course);
+        }
+
+        [HttpGet("{id:int}")]
+        public ActionResult<Course> GetCouse(int id)
+        {
+            var course = _dataRep.GetCouse(id);
+            if (course is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(course);
+        }
+
     }
 }
