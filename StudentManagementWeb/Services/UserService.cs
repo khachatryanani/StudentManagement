@@ -62,14 +62,9 @@ namespace StudentManagementWeb.Services
             throw new HttpRequestException(await response.Content.ReadAsStringAsync());
         }
 
-        public async Task DeleteUser(User user)
+        public async Task DeleteUser(int id)
         {
-            var json = System.Text.Json.JsonSerializer.Serialize(user);
-
-            var stringJson = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-
-            HttpResponseMessage response = await _httpClient.DeleteAsync(new string("Users/{user.Id}"));
+            HttpResponseMessage response = await _httpClient.DeleteAsync(new Uri($"Users/{id}", UriKind.Relative));
             if (response.IsSuccessStatusCode)
             {
                 return;
