@@ -8,11 +8,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using StudentManagementAPI.Data;
+using StudentManagementAPI.GraphQL.Queries;
 using StudentManagementAPI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GraphQL.Server;
+using StudentManagementAPI.GraphQL.Schemas;
 
 namespace StudentManagementAPI
 {
@@ -33,7 +36,11 @@ namespace StudentManagementAPI
         {
 
             services.AddControllers();
+            services.AddGraphQL().AddGraphTypes(ServiceLifetime.Scoped);
+        
+
             services.AddScoped<IDataRepository, DataRep>(dt => new DataRep(connectionString));
+            services.AddScoped<UserQuery, UserQuery>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentManagementAPI", Version = "v1" });
@@ -55,9 +62,10 @@ namespace StudentManagementAPI
             app.UseRouting();
 
             //app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGraphQL<SMSchema>();
+                endpoints.MapGraphQLPlayground();
                 endpoints.MapControllers();
             });
         }
