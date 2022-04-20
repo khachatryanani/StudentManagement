@@ -16,6 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GraphQL.Server;
 using StudentManagementAPI.GraphQL.Schemas;
+using GraphQL.Server.Ui.Voyager;
 
 namespace StudentManagementAPI
 {
@@ -34,10 +35,9 @@ namespace StudentManagementAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
-            services.AddGraphQL().AddGraphTypes(ServiceLifetime.Scoped);
-        
+            services.AddGraphQLServer().AddQueryType<UserQuery>();
+
 
             services.AddScoped<IDataRepository, DataRep>(dt => new DataRep(connectionString));
             services.AddScoped<UserQuery, UserQuery>();
@@ -60,11 +60,19 @@ namespace StudentManagementAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGraphQL();
+            });
+            app.UseGraphQLPlayground();
+            //app.UseGraphQLVoyager(new VoyagerOptions()
+            //{
+            //    GraphQLEndPoint = "/graphql"
+            //}, "/graphql-voyager");
             //app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGraphQL<SMSchema>();
+                //endpoints.MapGraphQL();
                 endpoints.MapGraphQLPlayground();
                 endpoints.MapControllers();
             });
