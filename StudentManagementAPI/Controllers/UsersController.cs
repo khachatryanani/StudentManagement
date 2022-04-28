@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Messaging.ServiceBus;
 
 namespace StudentManagementAPI.Controllers
 {
@@ -39,9 +40,15 @@ namespace StudentManagementAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostUser([FromBody] User user)
+        public async Task<ActionResult> PostUser([FromBody] User user)
         {
             user.Id = _dataRep.AddUser(user);
+
+            ServiceBusClient client = new ServiceBusClient("Endpoint=sb://studentsportalysu.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=FUe+IPKnwWEp6ru9CZwbb5lT81diSjPO4p2GVG1ka3A=");
+            ServiceBusSender sender = client.CreateSender("studentportalqueue");
+            await sender.SendMessageAsync(new ServiceBusMessage($"{user.FirstName}  {user.LastName} user created."));
+
+
 
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user.Id);
         }

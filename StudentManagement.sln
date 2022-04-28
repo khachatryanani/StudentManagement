@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagementAPI", "Stu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunction", "AzureFunction\AzureFunction.csproj", "{35CDAE9D-5E56-472B-8179-7F25422A67AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLogger", "DataLogger\DataLogger.csproj", "{EB12CE22-3736-4047-98D0-627D2628769F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{35CDAE9D-5E56-472B-8179-7F25422A67AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35CDAE9D-5E56-472B-8179-7F25422A67AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35CDAE9D-5E56-472B-8179-7F25422A67AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB12CE22-3736-4047-98D0-627D2628769F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB12CE22-3736-4047-98D0-627D2628769F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB12CE22-3736-4047-98D0-627D2628769F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB12CE22-3736-4047-98D0-627D2628769F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
