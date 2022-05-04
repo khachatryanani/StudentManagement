@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentManagementAPI", "Stu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunction", "AzureFunction\AzureFunction.csproj", "{35CDAE9D-5E56-472B-8179-7F25422A67AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLogger", "DataLogger\DataLogger.csproj", "{EB12CE22-3736-4047-98D0-627D2628769F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLogger", "DataLogger\DataLogger.csproj", "{EB12CE22-3736-4047-98D0-627D2628769F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

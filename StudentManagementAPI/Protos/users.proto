@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "StudentManagementAPI.GrpcServices";
+
+message usersRequest {}
+message user
+{
+	int32 id = 1;
+	string first_name = 2;
+	string last_name = 3;
+	string email = 4;
+}
+
+message usersResponse 
+{
+	repeated user users = 1;
+}
+
+
+
+service usersService
+{
+	rpc GetUsers (usersRequest) returns (usersResponse);
+}

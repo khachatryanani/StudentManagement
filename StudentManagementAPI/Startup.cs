@@ -37,7 +37,7 @@ namespace StudentManagementAPI
         {
             services.AddControllers();
             services.AddGraphQLServer().AddQueryType<UserQuery>();
-
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IDataRepository, DataRep>(dt => new DataRep(connectionString));
             services.AddScoped<UserQuery, UserQuery>();

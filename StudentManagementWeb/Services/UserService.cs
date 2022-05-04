@@ -22,10 +22,12 @@ namespace StudentManagementWeb.Services
 
         public async Task<List<User>> GetUsers()
         {
-           
-            HttpResponseMessage response =  await _httpClient.GetAsync(new Uri("Users",UriKind.Relative));
+            gRPCService service = new gRPCService();
+            var answer = await service.GetUsers();
+            //{users{firstName,lastName}}
+            HttpResponseMessage response = await _httpClient.GetAsync(new Uri("Users", UriKind.Relative));
 
-            
+
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
